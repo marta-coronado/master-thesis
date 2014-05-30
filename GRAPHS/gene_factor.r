@@ -8,7 +8,15 @@ qplot(Chromosome,Mutation, geom=("boxplot"), binwidth=3,fill=Chromosome) + xlab(
 
 # para saber si son significativos: 	kruskal.test(recombination~chromosome)
 # para saber si son significativos mejor usar LM con anova:
-mod2=lm(Recombination ~ Chr_domain)
+mod2=lm(kins  ~ Chr_domain)
+summary(mod2)
+Anova(mod2,type="2")
+
+mod2=lm(kins  ~ Chr_state)
+summary(mod2)
+Anova(mod2,type="2")
+
+mod2=lm(kins  ~ Chromosome)
 summary(mod2)
 Anova(mod2,type="2")
 
@@ -17,6 +25,31 @@ Anova(mod2,type="2")
 ######### GENES #############
 
 ## CHR_DOMAIN
+
+#mess_com
+qplot(Chr_domain,mess_com, geom=("boxplot"),fill=Chromosome, binwidth=3,outlier.color=NA,outlier.shape = NA) + xlab("Chromatin domain") + ylab("AAsubstitutions") + scale_fill_brewer(type="seq", palette=3) + theme(axis.title=element_text(face="bold",size="12", color="black"), legend.position="right") + coord_cartesian(ylim = quantile(AAsubstitutions, c(0, 0.99)))
+mod2=lm(mess_com ~ Chr_domain)
+summary(mod2)
+Anova(mod2,type="2")
+
+qplot(Chr_domain, mess_com, 
+      geom=("boxplot"), 
+      outlier.color = NA, outlier.shape = NA, 
+      fill=Chromosome
+) +
+  xlab("Chromatin domain") + 
+  ylab("Messenger complexity") + 
+  scale_fill_brewer(type="seq", palette=3) + 
+  theme(axis.title.x=element_text(face="bold", color="grey20", size=12), 
+        axis.title.y=element_text(face="bold", color="grey20", size=12), 
+        axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
+        axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
+  )  + 
+  scale_x_discrete(labels=c("Active","Both","Inactive")) +  
+  coord_cartesian(ylim=c(0.0, 2)
+  ) 
+ggsave(file="factor/mcomp_dom.svg")
+
 #Kz
 qplot(Chr_domain,AAsubstitutions, geom=("boxplot"),fill=Chromosome, binwidth=3,outlier.color=NA,outlier.shape = NA) + xlab("Chromatin domain") + ylab("AAsubstitutions") + scale_fill_brewer(type="seq", palette=3) + theme(axis.title=element_text(face="bold",size="12", color="black"), legend.position="right") + coord_cartesian(ylim = quantile(AAsubstitutions, c(0, 0.99)))
 mod2=lm(AAsubstitutions ~ Chr_domain)
@@ -279,7 +312,7 @@ qplot(Chr_domain, kins,
       fill=Chromosome
 ) +
   xlab("Chromatin domain") + 
-  ylab("Ki") + 
+  ylab("KI") + 
   scale_fill_brewer(type="seq", palette=3) + 
   theme(axis.title.x=element_text(face="bold", color="grey20", size=12), 
         axis.title.y=element_text(face="bold", color="grey20", size=12), 
@@ -294,6 +327,44 @@ ggsave(file="factor/kins_dom.svg")
 
 ## CHR_STATE
 
+#K4
+qplot(Chr_state, mess_com, 
+      geom=("boxplot"), 
+      outlier.color = NA, outlier.shape = NA, 
+      fill=Chr_state
+) +
+  xlab("Chromatin state") + 
+  ylab("Messenger complexity") + 
+  scale_fill_brewer(type="seq", palette=3) + 
+  theme(legend.position = "none",
+        axis.title.x=element_text(face="bold", color="grey20", size=12), 
+        axis.title.y=element_text(face="bold", color="grey20", size=12), 
+        axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
+        axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
+  )  + 
+  coord_cartesian(ylim=c(0.0, 2)
+  ) 
+ggsave(file="factor/mess_com_state.svg")
+
+#K4
+qplot(Chr_state, Mutation, 
+      geom=("boxplot"), 
+      outlier.color = NA, outlier.shape = NA, 
+      fill=Chr_state
+) +
+  xlab("Chromatin state") + 
+  ylab("K4") + 
+  scale_fill_brewer(type="seq", palette=3) + 
+  theme(legend.position = "none",
+        axis.title.x=element_text(face="bold", color="grey20", size=12), 
+        axis.title.y=element_text(face="bold", color="grey20", size=12), 
+        axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
+        axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
+  )  + 
+  coord_cartesian(ylim=c(0.0, 0.4)
+  ) 
+
+ggsave(file="factor/k4_state.svg")
 #Kz
 qplot(Chr_state, AAsubstitutions, 
       geom=("boxplot"), 
@@ -534,7 +605,7 @@ qplot(Chr_state, kins,
       fill=Chr_state
 ) +
   xlab("Chromatin state") + 
-  ylab("Ki") + 
+  ylab("KI") + 
   scale_fill_brewer(type="seq", palette=3) + 
   theme(legend.position = "none",
         axis.title.x=element_text(face="bold", color="grey20", size=12), 
@@ -593,6 +664,48 @@ summary(mod2)
 Anova(mod2,type="2")
 
 ## CHROMOSOME
+
+#K4
+qplot(Chromosome, mess_com, 
+      geom=("boxplot"), 
+      outlier.color = NA, outlier.shape = NA, 
+      fill=Chromosome
+) +
+  xlab("Chromosome") + 
+  ylab("Messenger complexity") + 
+  scale_fill_brewer(type="seq", palette=3) + 
+  theme(legend.position = "none",
+        axis.title.x=element_text(face="bold", color="grey20", size=12), 
+        axis.title.y=element_text(face="bold", color="grey20", size=12), 
+        axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
+        axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
+  )  + 
+  coord_cartesian(ylim=c(0.0, 3)
+  ) 
+
+ggsave(file="factor/mcomp_chr.svg")
+
+
+#K4
+qplot(Chromosome, Mutation, 
+      geom=("boxplot"), 
+      outlier.color = NA, outlier.shape = NA, 
+      fill=Chromosome
+) +
+  xlab("Chromosome") + 
+  ylab("K4") + 
+  scale_fill_brewer(type="seq", palette=3) + 
+  theme(legend.position = "none",
+        axis.title.x=element_text(face="bold", color="grey20", size=12), 
+        axis.title.y=element_text(face="bold", color="grey20", size=12), 
+        axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
+        axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
+  )  + 
+  coord_cartesian(ylim=c(0.0, 0.4)
+  ) 
+
+ggsave(file="factor/K4_chr.svg")
+
 
 #Kz
 qplot(Chromosome, AAsubstitutions, 
@@ -813,7 +926,7 @@ qplot(Chromosome, kins,
       fill=Chromosome
 ) +
   xlab("Chromosome") + 
-  ylab("Ki") + 
+  ylab("KI") + 
   scale_fill_brewer(type="seq", palette=3) + 
   theme(legend.position = "none",
         axis.title.x=element_text(face="bold", color="grey20", size=12), 
@@ -821,7 +934,7 @@ qplot(Chromosome, kins,
         axis.text.x=element_text(vjust=0.5, size=9, color="grey50"),
         axis.text.y=element_text(vjust=0.5, size=9, color="grey50")
   )  + 
-  coord_cartesian(ylim=c(0.0, 0.52)
+  coord_cartesian(ylim=c(-0.01, 0.52)
   )
 
 ggsave(file="factor/kins_chr.svg")
